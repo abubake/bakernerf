@@ -158,6 +158,9 @@ def blender_pose_and_intrinsics(training_split=0.9,
     with open(os.path.join(project_data_dir, json_files[0]), 'r') as file:
 
         data = json.load(file) # load the json file containing all the poses
+        
+        pixel_size = 36 / 400 # mm
+        focal = focal / pixel_size
 
         # For each frame/ pose in the json file, we extract it.
         for i, frame in enumerate(data['frames']):
@@ -170,9 +173,11 @@ def blender_pose_and_intrinsics(training_split=0.9,
                     mat[3][0], mat[3][1], mat[3][2], mat[3][3]]
         
             # Instrinsics Information
-
             cxy = [200,200] # Where the center of the image is
-            intrinsics = [focal,0.0,cxy[0],0.0,0.0,focal,cxy[1],0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]
+            intrinsics = [focal,0.0,cxy[0],0.0,
+                          0.0,focal,cxy[1],0.0,
+                          0.0,0.0,1.0,0.0,
+                          0.0,0.0,0.0,1.0]
 
             if c2w:
                 # get rid of 'train/' at the beginning of each frame name, which we use for indexing within the json file
