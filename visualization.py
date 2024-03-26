@@ -10,7 +10,9 @@ def get_c2w_poses(datapath, mode='train'):
         OUTPUT: array of poses, one for each image
     '''
     pose_file_names = [f for f in os.listdir(datapath + f'/{mode}/pose') if f.endswith('.txt')]
+    pose_file_names = sorted(pose_file_names, key=lambda x: str(x.split('.')[0]))
     intrinsics_file_names = [f for f in os.listdir(datapath + f'/{mode}/intrinsics') if f.endswith('.txt')]
+    intrinsics_file_names = sorted(intrinsics_file_names, key=lambda x: str(x.split('.')[0]))
     
     assert len(pose_file_names) == len(intrinsics_file_names) # sanity check
     
@@ -33,16 +35,19 @@ def visualize_camera_poses(camera_poses):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    for pose in camera_poses:
+    for i, pose in enumerate(camera_poses):
         position = pose[:3, 3]
         forward_direction = pose[:3, 2]  # Assuming the third column represents the forward direction
 
         # Plotting camera position
-        ax.scatter(position[0], position[1], position[2], c='blue', marker='o')
+        ax.scatter(position[0], position[1], position[2], c='blue', marker='o',label=f'Camera {i+1} Position')
 
         # Plotting camera direction as an arrow
-        ax.quiver(position[0], position[1], position[2], -forward_direction[0], -forward_direction[1], -forward_direction[2], color='red', length=1, normalize=True)
+        ax.quiver(position[0], position[1], position[2], -forward_direction[0], -forward_direction[1], -forward_direction[2], color='red', length=10, normalize=True,label=f'Camera {i+1} Direction')
 
+    ax.set_xlim(-11,11)
+    ax.set_ylim(-11,11)
+    ax.set_zlim(-11,11)
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')

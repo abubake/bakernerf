@@ -68,6 +68,13 @@ def omniverse_pose_and_intrinsics(training_split=0.9,
     # Takes intrinsics data and pose data from json files and puts into individual .txt files
     json_files = [f for f in os.listdir(project_data_dir) if f.endswith('.json')]
 
+    pixel_size = 36 / 400 # mm
+    f = 120 / pixel_size
+    intrinsics = [f, 0.0, 200, 0.0,
+                    0.0, f, 200, 0.0,
+                    0.0, 0.0, 1.0, 0.0, 
+                    0.0, 0.0, 0.0, 1.0]
+
     for json_file in json_files:
         with open(os.path.join(project_data_dir, json_file), 'r') as file:
             data = json.load(file)
@@ -89,9 +96,9 @@ def omniverse_pose_and_intrinsics(training_split=0.9,
                   c2w[3,0],c2w[3,1],c2w[3,2],c2w[3,3]]
             print(c2w)
 
-            res = data.get('renderProductResolution') # loading intrinsics info # FIXME: Should be center of image, NOT the resolution... so half the resolution
-            focal = data.get('cameraFocalLength')
-            intrinsics = [focal,0.0,res[0]/2,0.0,0.0,focal,res[1]/2,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]
+            # res = data.get('renderProductResolution') # loading intrinsics info # FIXME: Should be center of image, NOT the resolution... so half the resolution
+            # focal = data.get('cameraFocalLength')
+            # intrinsics = [focal,0.0,res[0]/2,0.0,0.0,focal,res[1]/2,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]
 
             if c2w:
                 output_file_path = os.path.join(train_folder+'/pose', f"{json_file.split('.')[0]}.txt")
@@ -159,8 +166,14 @@ def blender_pose_and_intrinsics(training_split=0.9,
 
         data = json.load(file) # load the json file containing all the poses
         
-        pixel_size = 36 / 400 # mm
-        focal = focal / pixel_size
+        # Instrinsics Information
+        pixel_size = 36 / 400 # mm (sensor size mm) / (width or height if square)
+        f = focal / pixel_size
+        cxy = [200,200] # TODO: add width and height as parameters here
+        intrinsics = [f, 0.0, cxy[0], 0.0,
+                      0.0, f, cxy[1], 0.0,
+                      0.0, 0.0, 1.0, 0.0, 
+                      0.0, 0.0, 0.0, 1.0]
 
         # For each frame/ pose in the json file, we extract it.
         for i, frame in enumerate(data['frames']):
@@ -171,13 +184,6 @@ def blender_pose_and_intrinsics(training_split=0.9,
                     mat[1][0], mat[1][1], mat[1][2], mat[1][3],
                     mat[2][0], mat[2][1], mat[2][2], mat[2][3],
                     mat[3][0], mat[3][1], mat[3][2], mat[3][3]]
-        
-            # Instrinsics Information
-            cxy = [200,200] # Where the center of the image is
-            intrinsics = [focal,0.0,cxy[0],0.0,
-                          0.0,focal,cxy[1],0.0,
-                          0.0,0.0,1.0,0.0,
-                          0.0,0.0,0.0,1.0]
 
             if c2w:
                 # get rid of 'train/' at the beginning of each frame name, which we use for indexing within the json file
@@ -194,7 +200,9 @@ def blender_pose_and_intrinsics(training_split=0.9,
 
     # splitting into train and test for pose and intrinsics data
     pose_files = [f for f in os.listdir(train_folder+'/pose') if f.endswith('.txt')]
+    pose_files = sorted(pose_files, key=lambda x: int(x.split('.')[0]))
     intrinsics_files = [f for f in os.listdir(train_folder+'/intrinsics') if f.endswith('.txt')]
+    intrinsics_files = sorted(intrinsics_files, key=lambda x: int(x.split('.')[0]))
 
     train_count = int(training_split * len(pose_files)) # 3-12-24 noticed training/test split was hardcoded -resolved
     test_count = len(pose_files) - train_count
