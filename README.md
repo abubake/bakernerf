@@ -1,5 +1,5 @@
 # Howdy!
-To get started, we need to add the conda environment. The requirements file contains everything that must be installed. Simply run the following command to create it, we recommend installing within a conda environment you create:
+To get started, the requirements file contains everything that must be installed after cloning the repo. Simply run the following command to create it, we recommend installing within a conda environment you create:
 
 <!-- Go to the yml file, change the name from /home/eherrin@ad.ufl.edu/code/baker_nerf/env to whatever your prefer. EX: bakernerf-env
 conda env create -f env.yml
