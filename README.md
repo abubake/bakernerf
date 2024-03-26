@@ -24,3 +24,9 @@ The program main functionalities are in the jupyter .ipynb files:
 * visualize - Use this to visualize pose and ray data for one or many poses
 
 To run with an existing dataset, simply unzip it in the datasets folder. 
+
+## Results:
+![image](https://github.com/abubake/bakernerf/assets/32299736/1be68feb-dac2-4bb1-be88-19a7957f07dc)
+
+![image](https://github.com/abubake/bakernerf/assets/32299736/3149ade5-f62e-4674-8e10-07e6d003f860)
+
