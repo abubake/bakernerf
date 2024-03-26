@@ -17,10 +17,10 @@ pip install -r requirements.txt
 
 The program main functionalities are in the jupyter .ipynb files:
 
-processing_training_data - Use this file to process training data you generated from blender or omniverse code, so that it can be used in Nerf-reconstruction
-Nerf-reconstruction - Program to train a NeRF given rays (can be used for unzipped data you already have)
-Testing - Use this to test PSNR in rendering novel views
-MeshExtraction - Use this to generate a 3D mesh from your trained model
-visualize - Use this to visualize pose and ray data for one or many poses
+* processing_training_data - Use this file to process training data you generated from blender or omniverse code, so that it can be used in Nerf-reconstruction
+* Nerf-reconstruction - Program to train a NeRF given rays (can be used for unzipped data you already have)
+* Testing - Use this to test PSNR in rendering novel views
+* MeshExtraction - Use this to generate a 3D mesh from your trained model
+* visualize - Use this to visualize pose and ray data for one or many poses
 
 To run with an existing dataset, simply unzip it in the datasets folder. 
