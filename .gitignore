@@ -6,3 +6,4 @@ temp/
 env/
 datasets/
 fox/
+__pycache__/

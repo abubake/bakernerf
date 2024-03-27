@@ -40,10 +40,10 @@ def visualize_camera_poses(camera_poses):
         forward_direction = pose[:3, 2]  # Assuming the third column represents the forward direction
 
         # Plotting camera position
-        ax.scatter(position[0], position[1], position[2], c='blue', marker='o',label=f'Camera {i+1} Position')
+        ax.scatter(position[0], position[1], position[2], c='blue', marker='o')
 
         # Plotting camera direction as an arrow
-        ax.quiver(position[0], position[1], position[2], -forward_direction[0], -forward_direction[1], -forward_direction[2], color='red', length=10, normalize=True,label=f'Camera {i+1} Direction')
+        ax.quiver(position[0], position[1], position[2], -forward_direction[0], -forward_direction[1], -forward_direction[2], color='red', length=10, normalize=True)
 
     ax.set_xlim(-11,11)
     ax.set_ylim(-11,11)
@@ -51,7 +51,6 @@ def visualize_camera_poses(camera_poses):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.legend()
     plt.show()
 
 
@@ -93,5 +92,4 @@ def visualize_rays(origins, directions, num_rays_to_sample_per_set=None):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.legend()
     plt.show()
